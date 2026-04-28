@@ -748,6 +748,8 @@ body::after {
 <script>
 const SHEET_ID = '13UlkWImCvyPmqpy3xwMpWBKyUIZnTqG56SkmIDmEZHY';
 const SHEET_NAME = '訓練記錄';
+// Paste your Google Apps Script Web App URL here (see apps-script.gs for setup).
+const WEBAPP_URL = '';
 let entries = [];
 let selectedWho = 'her';
 let curMonth = 4, curYear = 2026;
@@ -767,34 +769,20 @@ function setSyncStatus(state) {
   lbl.textContent = state === 'loading' ? '同步中…' : state === 'error' ? '重試' : '已同步';
 }
 
-async function callAPI(prompt) {
-  setSyncStatus('loading');
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: `You are a Google Sheets assistant. Spreadsheet ID: ${SHEET_ID}. Sheet name: "${SHEET_NAME}".
-Columns: A=who(her/him), B=date(YYYY-MM-DD), C=name, D=type, E=detail, F=mood, G=timestamp.
-For reads: return ONLY a JSON array with keys: who,date,name,type,detail,mood. No markdown, no extra text.
-For writes: append the row and return {"status":"ok"}. Create sheet with header if it doesn't exist.`,
-      messages: [{ role: 'user', content: prompt }],
-      mcp_servers: [{ type: 'url', url: 'https://sheets.googleapis.com/mcp/v1', name: 'sheets-mcp' }]
-    })
-  });
-  const data = await res.json();
-  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-  setSyncStatus('ok');
-  return text;
-}
-
 async function loadData() {
+  if (!WEBAPP_URL) {
+    setSyncStatus('error');
+    showToast('尚未設定 WEBAPP_URL，請見 apps-script.gs');
+    renderAll();
+    return;
+  }
   setSyncStatus('loading');
   try {
-    const raw = await callAPI(`Read all data rows from sheet "${SHEET_NAME}" (skip header). Return JSON array with keys: who, date, name, type, detail, mood.`);
-    const clean = raw.replace(/```json|```/g, '').trim();
-    entries = JSON.parse(clean);
+    const res = await fetch(`${WEBAPP_URL}?action=read&sheet=${encodeURIComponent(SHEET_NAME)}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.error || 'unknown');
+    entries = data.rows;
     renderAll();
     setSyncStatus('ok');
     showToast('✓ 資料已同步');
@@ -811,20 +799,31 @@ async function saveEntry() {
   const detail = document.getElementById('in-detail').value.trim();
   const mood = document.getElementById('in-mood').value.trim();
   if (!date || !type) { showToast('請填寫日期和訓練類型'); return; }
+  if (!WEBAPP_URL) { showToast('尚未設定 WEBAPP_URL，請見 apps-script.gs'); return; }
   const name = selectedWho === 'her' ? 'Mo摸' : '何帥';
   const ts = new Date().toISOString();
   const btn = document.getElementById('save-btn');
   btn.disabled = true; btn.textContent = '儲存中…';
+  setSyncStatus('loading');
   try {
-    await callAPI(`Append row to sheet "${SHEET_NAME}": ["${selectedWho}","${date}","${name}","${type}","${detail}","${mood}","${ts}"].`);
+    const res = await fetch(WEBAPP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'append', sheet: SHEET_NAME, row: [selectedWho, date, name, type, detail, mood, ts] })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.error || 'unknown');
     entries.push({ who: selectedWho, date, name, type, detail, mood });
     document.getElementById('in-type').value = '';
     document.getElementById('in-detail').value = '';
     document.getElementById('in-mood').value = '';
     document.getElementById('form-area').classList.remove('open');
     renderAll();
+    setSyncStatus('ok');
     showToast('✓ 已儲存到 Google Sheet！');
   } catch(e) {
+    setSyncStatus('error');
     showToast('儲存失敗，請重試');
   }
   btn.disabled = false;
