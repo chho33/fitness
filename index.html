@@ -24,6 +24,8 @@
   --card: #FFFFFF;
   --radius: 16px;
   --radius-sm: 10px;
+  --danger: #E24B4A;
+  --danger-light: #FEF0F0;
 }
 
 body {
@@ -61,7 +63,6 @@ body::after {
   z-index: 1;
 }
 
-/* HEADER */
 .header {
   display: flex;
   align-items: center;
@@ -71,554 +72,181 @@ body::after {
   border-bottom: 1px solid var(--border);
 }
 
-.logo {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
+.logo { display: flex; align-items: baseline; gap: 10px; }
+.logo-main { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
+.logo-heart { color: var(--her); font-size: 18px; }
+.logo-sub { font-size: 12px; color: var(--ink3); font-weight: 300; }
 
-.logo-main {
-  font-family: 'Nunito', sans-serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: -0.3px;
-}
-
-.logo-heart {
-  color: var(--her);
-  font-size: 18px;
-}
-
-.logo-sub {
-  font-size: 12px;
-  color: var(--ink3);
-  font-weight: 300;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.header-right { display: flex; align-items: center; gap: 10px; }
 
 .sheet-link {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--ink2);
-  text-decoration: none;
-  background: var(--card);
-  transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border);
+  font-size: 12px; color: var(--ink2); text-decoration: none; background: var(--card); transition: all 0.15s;
 }
-
-.sheet-link:hover {
-  border-color: var(--her);
-  color: var(--her-dark);
-  background: var(--her-light);
-}
-
+.sheet-link:hover { border-color: var(--her); color: var(--her-dark); background: var(--her-light); }
 .sheet-icon { font-size: 13px; }
 
 .sync-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  font-size: 12px;
-  cursor: pointer;
-  background: var(--card);
-  color: var(--ink2);
-  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border);
+  font-size: 12px; cursor: pointer; background: var(--card); color: var(--ink2); transition: all 0.15s;
 }
-
 .sync-btn:hover { background: var(--bg2); }
 
-.sync-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #5BAD5B;
-  flex-shrink: 0;
-}
-
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #5BAD5B; flex-shrink: 0; }
 .sync-dot.spin { background: #E0A83A; animation: blink 1s infinite; }
 .sync-dot.err { background: #D94F4F; }
-
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-/* PROFILES */
-.profiles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 24px;
-}
+.profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
 
 .profile-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  position: relative;
-  overflow: hidden;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden;
 }
-
-.profile-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-}
-
+.profile-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .profile-card.her::before { background: linear-gradient(90deg, var(--her), #F093B0); }
 .profile-card.him::before { background: linear-gradient(90deg, var(--him), #F0A870); }
+.profile-card.her::after { content: '🌸'; position: absolute; right: 16px; top: 14px; font-size: 24px; opacity: 0.25; }
+.profile-card.him::after { content: '💪'; position: absolute; right: 16px; top: 14px; font-size: 24px; opacity: 0.25; }
 
-.profile-card.her::after {
-  content: '🌸';
-  position: absolute;
-  right: 16px; top: 14px;
-  font-size: 24px;
-  opacity: 0.25;
-}
-
-.profile-card.him::after {
-  content: '💪';
-  position: absolute;
-  right: 16px; top: 14px;
-  font-size: 24px;
-  opacity: 0.25;
-}
-
-.profile-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.avatar {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
+.profile-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
 .avatar.her { background: var(--her-light); color: var(--her-dark); }
 .avatar.him { background: var(--him-light); color: var(--him-dark); }
+.profile-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.profile-loc { font-size: 11px; color: var(--ink3); }
 
-.profile-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-
-.profile-loc {
-  font-size: 11px;
-  color: var(--ink3);
-}
-
-.profile-stats {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 6px;
-}
-
-.ps {
-  background: var(--bg2);
-  border-radius: 8px;
-  padding: 8px 6px;
-  text-align: center;
-}
-
-.ps-num {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1;
-  margin-bottom: 3px;
-}
-
+.profile-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.ps { background: var(--bg2); border-radius: 8px; padding: 8px 6px; text-align: center; }
+.ps-num { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 600; line-height: 1; margin-bottom: 3px; }
 .ps-num.her { color: var(--her-dark); }
 .ps-num.him { color: var(--him-dark); }
 .ps-lbl { font-size: 10px; color: var(--ink3); }
 
-/* TABS */
-.tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 18px;
-}
-
-.tab {
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  font-size: 13px;
-  cursor: pointer;
-  color: var(--ink2);
-  background: var(--card);
-  transition: all 0.15s;
-  font-weight: 400;
-}
-
+.tabs { display: flex; gap: 6px; margin-bottom: 18px; }
+.tab { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border); font-size: 13px; cursor: pointer; color: var(--ink2); background: var(--card); transition: all 0.15s; }
 .tab:hover { background: var(--bg2); }
+.tab.act { background: var(--her-light); border-color: var(--her); color: var(--her-dark); font-weight: 500; }
 
-.tab.act {
-  background: var(--her-light);
-  border-color: var(--her);
-  color: var(--her-dark);
-  font-weight: 500;
-}
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.legend { display: flex; gap: 12px; align-items: center; font-size: 11px; color: var(--ink2); }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
-/* CALENDAR */
-.cal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.legend {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  font-size: 11px;
-  color: var(--ink2);
-}
-
-.leg-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.month-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--ink);
-  font-weight: 500;
-}
-
-.mn-btn {
-  width: 26px; height: 26px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  cursor: pointer;
-  font-size: 13px;
-  color: var(--ink2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.1s;
-}
-
+.month-nav { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink); font-weight: 500; }
+.mn-btn { width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-size: 13px; color: var(--ink2); display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
 .mn-btn:hover { background: var(--bg2); color: var(--ink); }
 
-.week-labels {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  margin-bottom: 5px;
-}
+.week-labels { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 5px; }
+.wl { font-size: 10px; color: var(--ink3); text-align: center; padding: 4px 0; }
 
-.wl {
-  font-size: 10px;
-  color: var(--ink3);
-  text-align: center;
-  padding: 4px 0;
-}
-
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  margin-bottom: 24px;
-}
-
-.dc {
-  aspect-ratio: 1;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: var(--card);
-  transition: all 0.12s;
-  position: relative;
-}
-
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 24px; }
+.dc { aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: var(--card); transition: all 0.12s; }
 .dc:hover { border-color: var(--her); transform: scale(1.04); }
 .dc.has-her { background: var(--her-light); border-color: rgba(212,83,126,0.4); }
 .dc.has-him { background: var(--him-light); border-color: rgba(224,123,69,0.4); }
-.dc.has-both {
-  background: linear-gradient(135deg, var(--her-light) 50%, var(--him-light) 50%);
-  border-color: var(--her);
-}
-
-.dc.today {
-  box-shadow: 0 0 0 2px var(--her);
-}
-
-.dc-num {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 1;
-}
-
+.dc.has-both { background: linear-gradient(135deg, var(--her-light) 50%, var(--him-light) 50%); border-color: var(--her); }
+.dc.today { box-shadow: 0 0 0 2px var(--her); }
+.dc-num { font-size: 12px; font-weight: 500; color: var(--ink); line-height: 1; }
 .dc.today .dc-num { color: var(--her-dark); font-weight: 600; }
-
-.dots {
-  display: flex;
-  gap: 2px;
-  margin-top: 3px;
-}
-
+.dots { display: flex; gap: 2px; margin-top: 3px; }
 .dot { width: 4px; height: 4px; border-radius: 50%; }
 .dot-her { background: var(--her); }
 .dot-him { background: var(--him); }
 
 /* LOG VIEW */
-.log-box {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  margin-bottom: 14px;
-}
-
-.log-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.badge {
-  font-size: 10px;
-  padding: 3px 10px;
-  border-radius: 10px;
-  font-weight: 500;
-}
-
+.log-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+.log-title { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.badge { font-size: 10px; padding: 3px 10px; border-radius: 10px; font-weight: 500; }
 .badge-her { background: var(--her-light); color: var(--her-dark); }
 .badge-him { background: var(--him-light); color: var(--him-dark); }
 
-.entry {
-  display: flex;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-
+.entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
 .entry:last-child { border-bottom: none; padding-bottom: 0; }
-
-.entry-left {
-  width: 38px;
-  flex-shrink: 0;
-  text-align: center;
-}
-
+.entry-left { width: 38px; flex-shrink: 0; text-align: center; }
 .entry-mo { font-size: 10px; color: var(--ink3); }
-
-.entry-day {
-  font-family: 'Nunito', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.1;
-}
-
+.entry-day { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 600; line-height: 1.1; }
 .entry-day.her { color: var(--her-dark); }
 .entry-day.him { color: var(--him-dark); }
-
+.entry-body { flex: 1; min-width: 0; }
 .entry-type { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
 .entry-detail { font-size: 11px; color: var(--ink2); line-height: 1.6; }
-.entry-mood {
-  font-size: 11px;
-  color: var(--ink2);
-  margin-top: 4px;
-  padding: 3px 9px;
-  background: var(--bg2);
-  border-radius: 6px;
-  display: inline-block;
-  font-style: italic;
-}
+.entry-mood { font-size: 11px; color: var(--ink2); margin-top: 4px; padding: 3px 9px; background: var(--bg2); border-radius: 6px; display: inline-block; font-style: italic; }
 
-.empty-msg {
-  font-size: 12px;
+/* DELETE BUTTON */
+.del-btn {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--ink3);
-  padding: 8px 0;
-  text-align: center;
-}
-
-/* ADD BUTTON */
-.add-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  border: 1.5px dashed rgba(212,83,126,0.4);
-  background: var(--bg);
-  color: var(--her-dark);
   font-size: 14px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+  display: flex; align-items: center; justify-content: center;
   transition: all 0.15s;
-  font-family: 'Noto Sans TC', sans-serif;
+  margin-top: 1px;
 }
+.del-btn:hover { background: var(--danger-light); border-color: rgba(226,75,74,0.3); color: var(--danger); }
 
-.add-btn:hover {
-  background: var(--her-light);
-  border-color: var(--her);
+.empty-msg { font-size: 12px; color: var(--ink3); padding: 8px 0; text-align: center; }
+
+.add-btn {
+  width: 100%; padding: 12px; border-radius: var(--radius-sm);
+  border: 1.5px dashed rgba(212,83,126,0.4); background: var(--bg); color: var(--her-dark);
+  font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: all 0.15s; font-family: 'Noto Sans TC', sans-serif;
 }
+.add-btn:hover { background: var(--her-light); border-color: var(--her); }
 
-/* FORM */
-.form {
-  background: var(--bg2);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 20px;
-  margin-top: 12px;
-  display: none;
-}
-
+.form { background: var(--bg2); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px; margin-top: 12px; display: none; }
 .form.open { display: block; }
+.form-title { font-size: 14px; font-weight: 500; margin-bottom: 14px; color: var(--ink); }
 
-.form-title {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 14px;
-  color: var(--ink);
-}
-
-.who-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.who-btn {
-  padding: 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  font-size: 12px;
-  cursor: pointer;
-  text-align: center;
-  background: var(--card);
-  color: var(--ink2);
-  transition: all 0.1s;
-  font-family: 'Noto Sans TC', sans-serif;
-}
-
+.who-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.who-btn { padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 12px; cursor: pointer; text-align: center; background: var(--card); color: var(--ink2); transition: all 0.1s; font-family: 'Noto Sans TC', sans-serif; }
 .who-btn.sel-her { background: var(--her-light); border-color: var(--her); color: var(--her-dark); font-weight: 500; }
 .who-btn.sel-him { background: var(--him-light); border-color: var(--him); color: var(--him-dark); font-weight: 500; }
 
 .frow { margin-bottom: 10px; }
 .flabel { font-size: 11px; color: var(--ink2); margin-bottom: 4px; display: block; }
-.finput {
-  width: 100%;
-  padding: 9px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 13px;
-  background: var(--card);
-  color: var(--ink);
-  font-family: 'Noto Sans TC', sans-serif;
-  outline: none;
-  transition: border-color 0.1s;
-}
+.finput { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--card); color: var(--ink); font-family: 'Noto Sans TC', sans-serif; outline: none; transition: border-color 0.1s; }
 .finput:focus { border-color: var(--her); }
 
-.save-btn {
-  width: 100%;
-  padding: 11px;
-  background: var(--her);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  cursor: pointer;
-  font-weight: 500;
-  margin-top: 4px;
-  font-family: 'Noto Sans TC', sans-serif;
-  transition: background 0.15s;
-}
-
+.save-btn { width: 100%; padding: 11px; background: var(--her); color: white; border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-weight: 500; margin-top: 4px; font-family: 'Noto Sans TC', sans-serif; transition: background 0.15s; }
 .save-btn:hover { background: var(--her-dark); }
 .save-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-/* TOAST */
-.toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: rgba(42,31,45,0.92);
-  color: white;
-  padding: 9px 20px;
-  border-radius: 20px;
-  font-size: 12px;
-  opacity: 0;
-  transition: all 0.3s;
-  pointer-events: none;
-  z-index: 999;
-  white-space: nowrap;
-}
+/* CONFIRM DIALOG */
+.overlay { position: fixed; inset: 0; background: rgba(42,31,45,0.45); z-index: 900; display: none; align-items: center; justify-content: center; }
+.overlay.open { display: flex; }
+.dialog { background: var(--card); border-radius: var(--radius); padding: 24px; max-width: 320px; width: 90%; box-shadow: 0 8px 32px rgba(42,31,45,0.18); }
+.dialog-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+.dialog-body { font-size: 12px; color: var(--ink2); line-height: 1.7; margin-bottom: 20px; }
+.dialog-entry { background: var(--bg2); border-radius: 8px; padding: 10px 12px; margin: 10px 0; font-size: 12px; color: var(--ink); }
+.dialog-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-cancel { padding: 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--ink2); font-size: 13px; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; }
+.btn-cancel:hover { background: var(--bg2); }
+.btn-delete { padding: 9px; border-radius: 8px; border: none; background: var(--danger); color: white; font-size: 13px; cursor: pointer; font-weight: 500; font-family: 'Noto Sans TC', sans-serif; }
+.btn-delete:hover { background: #C03938; }
+.btn-delete:disabled { opacity: 0.55; cursor: not-allowed; }
 
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(10px); background: rgba(42,31,45,0.92); color: white; padding: 9px 20px; border-radius: 20px; font-size: 12px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* SETUP NOTICE */
-.notice {
-  background: #FFF8E7;
-  border: 1px solid rgba(200,160,60,0.3);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  font-size: 12px;
-  color: #7A5A10;
-  line-height: 1.7;
-}
-
+.notice { background: #FFF8E7; border: 1px solid rgba(200,160,60,0.3); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 20px; font-size: 12px; color: #7A5A10; line-height: 1.7; }
 .notice strong { font-weight: 500; }
-.notice a { color: #B07D1A; }
 
 @media (max-width: 500px) {
   .profiles { grid-template-columns: 1fr; }
   .header { flex-wrap: wrap; gap: 10px; }
-  .who-row { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
 <body>
 
 <div class="app">
-
   <div class="header">
     <div class="logo">
       <div class="logo-main">Mo摸 & 何帥 <span class="logo-heart">♡</span></div>
@@ -636,8 +264,7 @@ body::after {
   </div>
 
   <div class="notice" id="setup-notice">
-    <strong>📌 使用說明：</strong>首次使用請先開啟右上角 Google Sheet，點「共用」輸入何帥的 Gmail，設為「編輯者」。之後兩人都能從各自裝置填入記錄，再點「同步」即可看到彼此最新進度！<br>
-    <span style="color:#A08020;font-size:11px;">（若 API 連線有問題，也可直接在 Google Sheet 填寫，此頁面作月曆顯示用）</span>
+    <strong>📌 使用說明：</strong>首次使用請先開啟右上角 Google Sheet，點「共用」輸入何帥的 Gmail，設為「編輯者」。之後兩人都能從各自裝置填入記錄，再點「同步」即可看到彼此最新進度！
     <span style="cursor:pointer;float:right;color:#B07D1A;" onclick="document.getElementById('setup-notice').style.display='none'">✕</span>
   </div>
 
@@ -645,10 +272,7 @@ body::after {
     <div class="profile-card her">
       <div class="profile-top">
         <div class="avatar her">Mo</div>
-        <div>
-          <div class="profile-name">Mo摸</div>
-          <div class="profile-loc">台灣 · UTC+8</div>
-        </div>
+        <div><div class="profile-name">Mo摸</div><div class="profile-loc">台灣 · UTC+8</div></div>
       </div>
       <div class="profile-stats">
         <div class="ps"><div class="ps-num her" id="her-total">—</div><div class="ps-lbl">累積次</div></div>
@@ -659,10 +283,7 @@ body::after {
     <div class="profile-card him">
       <div class="profile-top">
         <div class="avatar him">帥</div>
-        <div>
-          <div class="profile-name">何帥</div>
-          <div class="profile-loc">紐約 · UTC−4</div>
-        </div>
+        <div><div class="profile-name">何帥</div><div class="profile-loc">紐約 · UTC−4</div></div>
       </div>
       <div class="profile-stats">
         <div class="ps"><div class="ps-num him" id="him-total">—</div><div class="ps-lbl">累積次</div></div>
@@ -677,7 +298,6 @@ body::after {
     <div class="tab" onclick="setView('log')">訓練記錄</div>
   </div>
 
-  <!-- CALENDAR VIEW -->
   <div id="v-cal">
     <div class="cal-header">
       <div class="legend">
@@ -698,7 +318,6 @@ body::after {
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
-  <!-- LOG VIEW -->
   <div id="v-log" style="display:none;">
     <div class="log-box">
       <div class="log-title">Mo摸 最近訓練 <span class="badge badge-her">台灣</span></div>
@@ -710,79 +329,72 @@ body::after {
     </div>
   </div>
 
-  <!-- ADD BUTTON -->
   <button class="add-btn" onclick="toggleForm()">
     <span>＋</span> 記錄這次訓練
   </button>
 
-  <!-- FORM -->
   <div class="form" id="form-area">
     <div class="form-title">新增訓練記錄</div>
     <div class="who-row">
       <div class="who-btn sel-her" id="who-her" onclick="selectWho('her')">Mo摸（台灣）</div>
       <div class="who-btn" id="who-him" onclick="selectWho('him')">何帥（紐約）</div>
     </div>
-    <div class="frow">
-      <label class="flabel">日期</label>
-      <input type="date" class="finput" id="in-date">
-    </div>
-    <div class="frow">
-      <label class="flabel">訓練類型</label>
-      <input type="text" class="finput" id="in-type" placeholder="例：臀腿日 / 上肢燃脂 / 慢跑">
-    </div>
-    <div class="frow">
-      <label class="flabel">動作內容（選填）</label>
-      <input type="text" class="finput" id="in-detail" placeholder="例：髖推 4×12、飛輪 20min">
-    </div>
-    <div class="frow">
-      <label class="flabel">心情備注</label>
-      <input type="text" class="finput" id="in-mood" placeholder="今天感覺怎麼樣？">
-    </div>
+    <div class="frow"><label class="flabel">日期</label><input type="date" class="finput" id="in-date"></div>
+    <div class="frow"><label class="flabel">訓練類型</label><input type="text" class="finput" id="in-type" placeholder="例：臀腿日 / 上肢燃脂 / 慢跑"></div>
+    <div class="frow"><label class="flabel">動作內容（選填）</label><input type="text" class="finput" id="in-detail" placeholder="例：髖推 4×12、飛輪 20min"></div>
+    <div class="frow"><label class="flabel">心情備注</label><input type="text" class="finput" id="in-mood" placeholder="今天感覺怎麼樣？"></div>
     <button class="save-btn" id="save-btn" onclick="saveEntry()">儲存到 Google Sheet ♡</button>
   </div>
+</div>
 
+<!-- DELETE CONFIRM DIALOG -->
+<div class="overlay" id="del-overlay">
+  <div class="dialog">
+    <div class="dialog-title">確認刪除？</div>
+    <div class="dialog-body">刪除後無法復原，確定要刪掉這筆記錄嗎？</div>
+    <div class="dialog-entry" id="del-preview">—</div>
+    <div class="dialog-btns">
+      <button class="btn-cancel" onclick="closeDeleteDialog()">取消</button>
+      <button class="btn-delete" id="btn-confirm-del" onclick="confirmDelete()">刪除</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const SHEET_ID = '13UlkWImCvyPmqpy3xwMpWBKyUIZnTqG56SkmIDmEZHY';
 const SHEET_NAME = '訓練記錄';
-// Paste your Google Apps Script Web App URL here (see apps-script.gs for setup).
 const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyEPnGANQ8dt6vnf0JuBnldlWLw_qQ-JWcfi7N-X-0y496i9pl-V9JO0cx_4NRFYsHL/exec';
-let entries = [];
+
+let entries = []; // each: { rowIndex, who, date, name, type, detail, mood }
 let selectedWho = 'her';
-let curMonth = 4, curYear = 2026;
+let curMonth = new Date().getMonth() + 1;
+let curYear = new Date().getFullYear();
+let pendingDeleteIndex = null; // rowIndex in sheet
+
 const monthNames = ['','1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 
 function showToast(msg, dur=2500) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), dur);
 }
 
 function setSyncStatus(state) {
   const dot = document.getElementById('sync-dot');
   const lbl = document.getElementById('sync-label');
-  dot.className = 'sync-dot' + (state === 'loading' ? ' spin' : state === 'error' ? ' err' : '');
-  lbl.textContent = state === 'loading' ? '同步中…' : state === 'error' ? '重試' : '已同步';
+  dot.className = 'sync-dot' + (state==='loading'?' spin':state==='error'?' err':'');
+  lbl.textContent = state==='loading'?'同步中…':state==='error'?'重試':'已同步';
 }
 
 async function loadData() {
-  if (!WEBAPP_URL) {
-    setSyncStatus('error');
-    showToast('尚未設定 WEBAPP_URL，請見 apps-script.gs');
-    renderAll();
-    return;
-  }
   setSyncStatus('loading');
   try {
     const res = await fetch(`${WEBAPP_URL}?action=read&sheet=${encodeURIComponent(SHEET_NAME)}`);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (data.status !== 'ok') throw new Error(data.error || 'unknown');
-    entries = data.rows;
+    entries = data.rows; // rows include rowIndex from Apps Script
     renderAll();
     setSyncStatus('ok');
     showToast('✓ 資料已同步');
@@ -799,7 +411,6 @@ async function saveEntry() {
   const detail = document.getElementById('in-detail').value.trim();
   const mood = document.getElementById('in-mood').value.trim();
   if (!date || !type) { showToast('請填寫日期和訓練類型'); return; }
-  if (!WEBAPP_URL) { showToast('尚未設定 WEBAPP_URL，請見 apps-script.gs'); return; }
   const name = selectedWho === 'her' ? 'Mo摸' : '何帥';
   const ts = new Date().toISOString();
   const btn = document.getElementById('save-btn');
@@ -814,14 +425,13 @@ async function saveEntry() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (data.status !== 'ok') throw new Error(data.error || 'unknown');
-    entries.push({ who: selectedWho, date, name, type, detail, mood });
     document.getElementById('in-type').value = '';
     document.getElementById('in-detail').value = '';
     document.getElementById('in-mood').value = '';
     document.getElementById('form-area').classList.remove('open');
-    renderAll();
     setSyncStatus('ok');
-    showToast('✓ 已儲存到 Google Sheet！');
+    showToast('✓ 已儲存！重新同步中…');
+    await loadData(); // refresh to get new rowIndex
   } catch(e) {
     setSyncStatus('error');
     showToast('儲存失敗，請重試');
@@ -830,86 +440,134 @@ async function saveEntry() {
   btn.textContent = '儲存到 Google Sheet ♡';
 }
 
+// ---- DELETE ----
+function askDelete(rowIndex, entry) {
+  pendingDeleteIndex = rowIndex;
+  document.getElementById('del-preview').textContent =
+    `${entry.name}｜${entry.date}｜${entry.type}${entry.mood ? '「' + entry.mood + '」' : ''}`;
+  document.getElementById('del-overlay').classList.add('open');
+}
+
+function closeDeleteDialog() {
+  pendingDeleteIndex = null;
+  document.getElementById('del-overlay').classList.remove('open');
+}
+
+async function confirmDelete() {
+  if (pendingDeleteIndex === null) return;
+  const btn = document.getElementById('btn-confirm-del');
+  btn.disabled = true; btn.textContent = '刪除中…';
+  try {
+    const res = await fetch(WEBAPP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'delete', sheet: SHEET_NAME, rowIndex: pendingDeleteIndex })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.error || 'unknown');
+    closeDeleteDialog();
+    showToast('✓ 已刪除');
+    await loadData();
+  } catch(e) {
+    showToast('刪除失敗，請重試');
+  }
+  btn.disabled = false; btn.textContent = '刪除';
+}
+
+// ---- RENDER ----
 function renderAll() { renderCalendar(); renderLogs(); updateStats(); }
 
 function renderCalendar() {
   const grid = document.getElementById('cal-grid');
   grid.innerHTML = '';
-  const first = new Date(curYear, curMonth - 1, 1).getDay();
+  const first = new Date(curYear, curMonth-1, 1).getDay();
   const days = new Date(curYear, curMonth, 0).getDate();
   const today = new Date();
-  for (let i = 0; i < first; i++) {
-    const e = document.createElement('div'); e.className = 'dc'; e.style.visibility = 'hidden'; grid.appendChild(e);
+  for (let i=0; i<first; i++) {
+    const e = document.createElement('div'); e.className='dc'; e.style.visibility='hidden'; grid.appendChild(e);
   }
-  for (let d = 1; d <= days; d++) {
-    const ds = curYear + '-' + String(curMonth).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-    const hh = entries.some(e => e.who === 'her' && e.date === ds);
-    const hm = entries.some(e => e.who === 'him' && e.date === ds);
-    const cell = document.createElement('div'); cell.className = 'dc';
-    if (hh && hm) cell.classList.add('has-both');
+  for (let d=1; d<=days; d++) {
+    const ds = curYear+'-'+String(curMonth).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const hh = entries.some(e=>e.who==='her'&&e.date===ds);
+    const hm = entries.some(e=>e.who==='him'&&e.date===ds);
+    const cell = document.createElement('div'); cell.className='dc';
+    if (hh&&hm) cell.classList.add('has-both');
     else if (hh) cell.classList.add('has-her');
     else if (hm) cell.classList.add('has-him');
-    const isT = today.getFullYear() === curYear && (today.getMonth() + 1) === curMonth && today.getDate() === d;
+    const isT = today.getFullYear()===curYear&&(today.getMonth()+1)===curMonth&&today.getDate()===d;
     if (isT) cell.classList.add('today');
-    const dots = document.createElement('div'); dots.className = 'dots';
-    if (hh) { const dot = document.createElement('div'); dot.className = 'dot dot-her'; dots.appendChild(dot); }
-    if (hm) { const dot = document.createElement('div'); dot.className = 'dot dot-him'; dots.appendChild(dot); }
-    cell.innerHTML = '<div class="dc-num">' + d + '</div>';
+    const dots = document.createElement('div'); dots.className='dots';
+    if (hh){const dot=document.createElement('div');dot.className='dot dot-her';dots.appendChild(dot);}
+    if (hm){const dot=document.createElement('div');dot.className='dot dot-him';dots.appendChild(dot);}
+    cell.innerHTML='<div class="dc-num">'+d+'</div>';
     cell.appendChild(dots);
-    cell.onclick = () => quickLog(ds);
+    cell.onclick=()=>quickLog(ds);
     grid.appendChild(cell);
   }
 }
 
 function renderLogs() {
-  ['her', 'him'].forEach(who => {
-    const c = document.getElementById(who + '-entries');
-    const mine = entries.filter(e => e.who === who).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
-    if (!mine.length) { c.innerHTML = '<div class="empty-msg">還沒有記錄，來第一筆吧！</div>'; return; }
-    c.innerHTML = mine.map(e => {
+  ['her','him'].forEach(who => {
+    const c = document.getElementById(who+'-entries');
+    const mine = entries
+      .filter(e=>e.who===who)
+      .sort((a,b)=>b.date.localeCompare(a.date))
+      .slice(0, 10);
+    if (!mine.length) { c.innerHTML='<div class="empty-msg">還沒有記錄，來第一筆吧！</div>'; return; }
+    c.innerHTML = '';
+    mine.forEach(e => {
       const d = new Date(e.date);
-      return `<div class="entry">
+      const div = document.createElement('div');
+      div.className = 'entry';
+      div.innerHTML = `
         <div class="entry-left">
-          <div class="entry-mo">${d.getMonth() + 1}月</div>
+          <div class="entry-mo">${d.getMonth()+1}月</div>
           <div class="entry-day ${who}">${d.getDate()}</div>
         </div>
-        <div>
+        <div class="entry-body">
           <div class="entry-type">${e.type}</div>
-          ${e.detail ? `<div class="entry-detail">${e.detail}</div>` : ''}
-          ${e.mood ? `<div class="entry-mood">"${e.mood}"</div>` : ''}
+          ${e.detail?`<div class="entry-detail">${e.detail}</div>`:''}
+          ${e.mood?`<div class="entry-mood">"${e.mood}"</div>`:''}
         </div>
-      </div>`;
-    }).join('');
+        <button class="del-btn" title="刪除這筆記錄">✕</button>
+      `;
+      div.querySelector('.del-btn').onclick = (ev) => {
+        ev.stopPropagation();
+        askDelete(e.rowIndex, e);
+      };
+      c.appendChild(div);
+    });
   });
 }
 
 function updateStats() {
   const now = new Date();
-  const ws = new Date(now); ws.setDate(now.getDate() - now.getDay());
-  const ms = curYear + '-' + String(curMonth).padStart(2, '0');
-  ['her', 'him'].forEach(who => {
-    const all = entries.filter(e => e.who === who);
-    const wk = all.filter(e => new Date(e.date) >= ws).length;
-    const mo = all.filter(e => e.date.startsWith(ms)).length;
-    document.getElementById(who + '-total').textContent = all.length;
-    document.getElementById(who + '-week').textContent = wk;
-    document.getElementById(who + '-month').textContent = mo;
+  const ws = new Date(now); ws.setDate(now.getDate()-now.getDay());
+  const ms = curYear+'-'+String(curMonth).padStart(2,'0');
+  ['her','him'].forEach(who => {
+    const all = entries.filter(e=>e.who===who);
+    const wk = all.filter(e=>new Date(e.date)>=ws).length;
+    const mo = all.filter(e=>e.date.startsWith(ms)).length;
+    document.getElementById(who+'-total').textContent = all.length;
+    document.getElementById(who+'-week').textContent = wk;
+    document.getElementById(who+'-month').textContent = mo;
   });
 }
 
 function changeMonth(d) {
   curMonth += d;
-  if (curMonth > 12) { curMonth = 1; curYear++; }
-  if (curMonth < 1) { curMonth = 12; curYear--; }
-  document.getElementById('month-label').textContent = curYear + ' 年 ' + monthNames[curMonth];
+  if (curMonth>12){curMonth=1;curYear++;}
+  if (curMonth<1){curMonth=12;curYear--;}
+  document.getElementById('month-label').textContent = curYear+' 年 '+monthNames[curMonth];
   renderCalendar();
 }
 
 function setView(v) {
-  document.getElementById('v-cal').style.display = v === 'cal' ? 'block' : 'none';
-  document.getElementById('v-log').style.display = v === 'log' ? 'block' : 'none';
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.className = 'tab' + (((v === 'cal' && i === 0) || (v === 'log' && i === 1)) ? ' act' : '');
+  document.getElementById('v-cal').style.display = v==='cal'?'block':'none';
+  document.getElementById('v-log').style.display = v==='log'?'block':'none';
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.className='tab'+(((v==='cal'&&i===0)||(v==='log'&&i===1))?' act':'');
   });
 }
 
@@ -930,18 +588,19 @@ function quickLog(ds) {
 
 function selectWho(who) {
   selectedWho = who;
-  document.getElementById('who-her').className = 'who-btn' + (who === 'her' ? ' sel-her' : '');
-  document.getElementById('who-him').className = 'who-btn' + (who === 'him' ? ' sel-him' : '');
+  document.getElementById('who-her').className='who-btn'+(who==='her'?' sel-her':'');
+  document.getElementById('who-him').className='who-btn'+(who==='him'?' sel-him':'');
 }
 
+// click outside dialog to close
+document.getElementById('del-overlay').addEventListener('click', function(e){
+  if (e.target === this) closeDeleteDialog();
+});
+
 // Init
-const d = new Date();
-curMonth = d.getMonth() + 1;
-curYear = d.getFullYear();
-document.getElementById('month-label').textContent = curYear + ' 年 ' + monthNames[curMonth];
+document.getElementById('month-label').textContent = curYear+' 年 '+monthNames[curMonth];
 renderCalendar();
 updateStats();
-// 自動載入
 loadData();
 </script>
 </body>

@@ -1,88 +1,112 @@
-/**
- * Google Apps Script Web App backing the fitness diary page.
- *
- * Setup (one-time):
- *   1. Open the spreadsheet:
- *        https://docs.google.com/spreadsheets/d/13UlkWImCvyPmqpy3xwMpWBKyUIZnTqG56SkmIDmEZHY/edit
- *   2. Extensions -> Apps Script. Replace the default Code.gs with this file's contents.
- *   3. Deploy -> New deployment -> Type: Web app
- *        - Execute as: Me
- *        - Who has access: Anyone
- *      Click Deploy, authorize when prompted, copy the Web app URL.
- *   4. Paste that URL into WEBAPP_URL in index.html, then commit & push.
- *
- * Re-deploy after editing: Deploy -> Manage deployments -> edit -> New version -> Deploy.
- *
- * Sheet schema (header row, auto-created on first append):
- *   who | date | name | type | detail | mood | timestamp
- */
+// Mo摸 & 何帥 健身日記 — Google Apps Script
+// 部署方式：擴充功能 → Apps Script → 貼上此程式碼 → 部署 → 新增部署 → 類型選「網頁應用程式」
+// 執行身份：「我」、存取權：「任何人」
 
-const HEADER = ['who', 'date', 'name', 'type', 'detail', 'mood', 'timestamp'];
+const SPREADSHEET_ID = '13UlkWImCvyPmqpy3xwMpWBKyUIZnTqG56SkmIDmEZHY';
 
 function doGet(e) {
+  const params = e.parameter;
+  const action = params.action;
+  const sheetName = params.sheet || '訓練記錄';
+
   try {
-    const action = (e.parameter.action || 'read').toLowerCase();
-    const sheetName = e.parameter.sheet || '訓練記錄';
-    if (action !== 'read') return json({ status: 'error', error: 'unknown action: ' + action });
-    const sheet = getOrCreateSheet(sheetName);
-    const values = sheet.getDataRange().getValues();
-    const rows = [];
-    for (let i = 1; i < values.length; i++) {
-      const r = values[i];
-      if (!r[0] && !r[1]) continue;
-      rows.push({
-        who: String(r[0] || ''),
-        date: formatDate(r[1]),
-        name: String(r[2] || ''),
-        type: String(r[3] || ''),
-        detail: String(r[4] || ''),
-        mood: String(r[5] || '')
-      });
+    if (action === 'read') {
+      return handleRead(sheetName);
     }
-    return json({ status: 'ok', rows: rows });
+    return jsonResponse({ status: 'error', error: 'Unknown GET action: ' + action });
   } catch (err) {
-    return json({ status: 'error', error: String(err) });
+    return jsonResponse({ status: 'error', error: err.message });
   }
 }
 
 function doPost(e) {
   try {
     const body = JSON.parse(e.postData.contents);
-    const action = (body.action || '').toLowerCase();
+    const action = body.action;
     const sheetName = body.sheet || '訓練記錄';
-    if (action !== 'append') return json({ status: 'error', error: 'unknown action: ' + action });
-    if (!Array.isArray(body.row)) return json({ status: 'error', error: 'row must be an array' });
-    const sheet = getOrCreateSheet(sheetName);
-    sheet.appendRow(body.row);
-    return json({ status: 'ok' });
+
+    if (action === 'append') {
+      return handleAppend(sheetName, body.row);
+    }
+    if (action === 'delete') {
+      return handleDelete(sheetName, body.rowIndex);
+    }
+    return jsonResponse({ status: 'error', error: 'Unknown POST action: ' + action });
   } catch (err) {
-    return json({ status: 'error', error: String(err) });
+    return jsonResponse({ status: 'error', error: err.message });
   }
 }
 
-function getOrCreateSheet(name) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(name);
+// ── READ ──────────────────────────────────────────────────────────────────────
+// Returns all rows with their actual sheet row index (1-based, skipping header).
+function handleRead(sheetName) {
+  const sheet = getOrCreateSheet(sheetName);
+  const lastRow = sheet.getLastRow();
+
+  if (lastRow <= 1) {
+    // Only header row or empty
+    return jsonResponse({ status: 'ok', rows: [] });
+  }
+
+  const data = sheet.getRange(2, 1, lastRow - 1, 7).getValues();
+  const rows = data
+    .map((row, i) => ({
+      rowIndex: i + 2, // actual sheet row number (header is row 1)
+      who:    row[0] || '',
+      date:   row[1] ? formatDate(row[1]) : '',
+      name:   row[2] || '',
+      type:   row[3] || '',
+      detail: row[4] || '',
+      mood:   row[5] || '',
+    }))
+    .filter(r => r.who && r.date); // skip blank rows
+
+  return jsonResponse({ status: 'ok', rows });
+}
+
+// ── APPEND ────────────────────────────────────────────────────────────────────
+function handleAppend(sheetName, row) {
+  const sheet = getOrCreateSheet(sheetName);
+  sheet.appendRow(row);
+  return jsonResponse({ status: 'ok' });
+}
+
+// ── DELETE ────────────────────────────────────────────────────────────────────
+// rowIndex is the actual 1-based sheet row number returned by handleRead.
+function handleDelete(sheetName, rowIndex) {
+  if (!rowIndex || rowIndex < 2) {
+    return jsonResponse({ status: 'error', error: 'Invalid rowIndex: ' + rowIndex });
+  }
+  const sheet = getOrCreateSheet(sheetName);
+  sheet.deleteRow(rowIndex);
+  return jsonResponse({ status: 'ok' });
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function getOrCreateSheet(sheetName) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(sheetName);
   if (!sheet) {
-    sheet = ss.insertSheet(name);
-    sheet.appendRow(HEADER);
-  } else if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADER);
+    sheet = ss.insertSheet(sheetName);
+    sheet.appendRow(['who', 'date', 'name', 'type', 'detail', 'mood', 'timestamp']);
+    sheet.setFrozenRows(1);
   }
   return sheet;
 }
 
-function formatDate(v) {
-  if (v instanceof Date) {
-    const y = v.getFullYear();
-    const m = String(v.getMonth() + 1).padStart(2, '0');
-    const d = String(v.getDate()).padStart(2, '0');
+function formatDate(value) {
+  // Handles both Date objects and strings
+  if (value instanceof Date) {
+    const y = value.getFullYear();
+    const m = String(value.getMonth() + 1).padStart(2, '0');
+    const d = String(value.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
   }
-  return String(v || '');
+  return String(value);
 }
 
-function json(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
